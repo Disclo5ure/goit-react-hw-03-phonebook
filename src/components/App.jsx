@@ -25,6 +25,7 @@ export class App extends React.Component {
     else {
       contacts.push({ name: name, number: number, id: nanoid() });
       this.setState({ contacts: contacts });
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
   };
 
@@ -42,7 +43,13 @@ export class App extends React.Component {
       contact => contact.name !== name
     );
     this.setState({ contacts: newContacts });
+    localStorage.setItem('contacts', JSON.stringify(newContacts));
   };
+
+  componentDidMount() {
+    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
+    this.setState({ contacts: savedContacts });
+  }
 
   render() {
     return (
