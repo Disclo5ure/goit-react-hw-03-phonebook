@@ -17,16 +17,24 @@ export class App extends React.Component {
     const number = form.elements.number.value;
     let contacts = this.state.contacts;
     if (
-      contacts.find(
+      this.state.contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     )
       alert(`${name} is already in contacts.`);
     else {
-      contacts.push({ name: name, number: number, id: nanoid() });
-      this.setState({ contacts: contacts });
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      this.setState(prev => {
+        const newContacts = [
+          ...prev.contacts,
+          { name: name, number: number, id: nanoid() },
+        ];
+        localStorage.setItem('contacts', JSON.stringify(newContacts));
+        return {
+          contacts: newContacts,
+        };
+      });
     }
+    form.reset();
   };
 
   handleFilter = e => {
@@ -39,15 +47,23 @@ export class App extends React.Component {
     );
 
   handleDelete = name => {
-    const newContacts = this.state.contacts.filter(
-      contact => contact.name !== name
-    );
-    this.setState({ contacts: newContacts });
-    localStorage.setItem('contacts', JSON.stringify(newContacts));
+    this.setState(prev => {
+      const newContacts = prev.contacts.filter(
+        contact => contact.name !== name
+      );
+      localStorage.setItem('contacts', JSON.stringify(newContacts));
+      return {
+        contacts: newContacts,
+      };
+    });
   };
 
   componentDidMount() {
-    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
+    let savedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (!savedContacts) {
+      savedContacts = [];
+      localStorage.setItem('contacts', JSON.stringify(savedContacts));
+    }
     this.setState({ contacts: savedContacts });
   }
 
