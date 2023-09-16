@@ -14,7 +14,7 @@ export class App extends React.Component {
     let savedContacts = JSON.parse(localStorage.getItem('contacts'));
     if (!savedContacts) {
       savedContacts = [];
-      windowlocalStorage.setItem('contacts', JSON.stringify(savedContacts));
+      localStorage.setItem('contacts', JSON.stringify(savedContacts));
     }
     this.setState({ contacts: savedContacts });
   }
@@ -24,7 +24,6 @@ export class App extends React.Component {
     const form = e.currentTarget;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
-    let contacts = this.state.contacts;
     if (
       this.state.contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
