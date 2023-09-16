@@ -10,6 +10,15 @@ export class App extends React.Component {
     filter: '',
   };
 
+  componentDidMount() {
+    let savedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (!savedContacts) {
+      savedContacts = [];
+      localStorage.setItem('contacts', JSON.stringify(savedContacts));
+    }
+    this.setState({ contacts: savedContacts });
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -57,15 +66,6 @@ export class App extends React.Component {
       };
     });
   };
-
-  componentDidMount() {
-    let savedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (!savedContacts) {
-      savedContacts = [];
-      localStorage.setItem('contacts', JSON.stringify(savedContacts));
-    }
-    this.setState({ contacts: savedContacts });
-  }
 
   render() {
     return (
