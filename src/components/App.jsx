@@ -11,10 +11,10 @@ export class App extends React.Component {
   };
 
   componentDidMount() {
-    let savedContacts = JSON.parse(localStorage.getItem('contacts'));
+    let savedContacts = JSON.parse(window.localStorage.getItem('contacts'));
     if (!savedContacts) {
       savedContacts = [];
-      localStorage.setItem('contacts', JSON.stringify(savedContacts));
+      window.localStorage.setItem('contacts', JSON.stringify(savedContacts));
     }
     this.setState({ contacts: savedContacts });
   }
@@ -37,7 +37,7 @@ export class App extends React.Component {
           ...prev.contacts,
           { name: name, number: number, id: nanoid() },
         ];
-        localStorage.setItem('contacts', JSON.stringify(newContacts));
+        window.localStorage.setItem('contacts', JSON.stringify(newContacts));
         return {
           contacts: newContacts,
         };
@@ -60,7 +60,7 @@ export class App extends React.Component {
       const newContacts = prev.contacts.filter(
         contact => contact.name !== name
       );
-      localStorage.setItem('contacts', JSON.stringify(newContacts));
+      window.localStorage.setItem('contacts', JSON.stringify(newContacts));
       return {
         contacts: newContacts,
       };
