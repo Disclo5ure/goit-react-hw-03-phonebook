@@ -19,6 +19,11 @@ export class App extends React.Component {
     this.setState({ contacts: savedContacts });
   }
 
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length)
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -36,7 +41,6 @@ export class App extends React.Component {
           ...prev.contacts,
           { name: name, number: number, id: nanoid() },
         ];
-        localStorage.setItem('contacts', JSON.stringify(newContacts));
         return {
           contacts: newContacts,
         };
@@ -59,7 +63,6 @@ export class App extends React.Component {
       const newContacts = prev.contacts.filter(
         contact => contact.name !== name
       );
-      localStorage.setItem('contacts', JSON.stringify(newContacts));
       return {
         contacts: newContacts,
       };
